@@ -5,13 +5,16 @@ from printer import Printer
 
 
 class Reviewer_Figure(Reviewer):
-    _PATTERN_BEGIN_FIGURE = re.compile(r"\\begin\{figure")
-    _PATTERN_END_FIGURE = re.compile(r"\\end\{figure")
+    _PATTERN_BEGIN_FIGURE = re.compile(
+        r"\\begin\{figure\*?\}(?:\[(?P<position>[^\]]+)\])?"
+    )
+    _PATTERN_END_FIGURE = re.compile(r"\\end\{figure\*?\}")
     _PATTERN_INCLUDEGRAPHICS = re.compile(r"\\includegraphics\s*(?:\[[^\]]*\])?")
     _PATTERN_SCALE = re.compile(r"(?:scale|width|height)\s*=", re.IGNORECASE)
     _PATTERN_LABEL = re.compile(r"\\label\{")
     _PATTERN_CAPTION = re.compile(r"\\caption(?:\[[^\]]*\])?\{")
     _PATTERN_CAPTION_CONTENT = re.compile(r"\\caption(?:\[[^\]]*\])?\{([^}]*)\}")
+    _ALLOWED_POSITIONS = {"bt", "t", "b", "tb"}
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
@@ -38,7 +41,8 @@ class Reviewer_Figure(Reviewer):
             line = line[: line.index("%")]
 
         # Check for figure environment start
-        if self._PATTERN_BEGIN_FIGURE.search(line):
+        begin_match = self._PATTERN_BEGIN_FIGURE.search(line)
+        if begin_match:
             self.in_figure = True
             self.figure_start_line = line_no
             self.has_label_in_figure = False
@@ -47,6 +51,16 @@ class Reviewer_Figure(Reviewer):
             self.first_caption_line = None
             self.first_includegraphics_line = None
             self.includegraphics_lines = []
+
+            position = begin_match.group("position")
+            if position is not None and position not in self._ALLOWED_POSITIONS:
+                self.comments.append(
+                    (
+                        line_no,
+                        "Figure position must be empty or one of [bt], [t], [b], [tb].",
+                    )
+                )
+                self.error_count += 1
 
         if self.in_figure:
             # Check for label
