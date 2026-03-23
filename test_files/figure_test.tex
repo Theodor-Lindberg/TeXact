@@ -1,0 +1,61 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+\section{Figures}
+
+\subsection{Good figure - has label and no scaling}
+\begin{figure}
+  \centering
+  \includegraphics{myimage.png}
+  \caption{A proper figure}
+  \label{fig:proper}
+\end{figure}
+
+\subsection{Bad figure - scaled image}
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.5]{image1.png}
+  \caption{Scaled image}
+  \label{fig:scaled}
+\end{figure}
+
+\subsection{Bad figure - width specified}
+\begin{figure}
+  \centering
+  \includegraphics[width=5cm]{image2.png}
+  \caption{Width specified}
+  \label{fig:width}
+\end{figure}
+
+\subsection{Bad figure - no label}
+\begin{figure}
+  \centering
+  \includegraphics{image3.png}
+  \caption{Missing label}
+\end{figure}
+
+\subsection{Bad figure - height and no label}
+\begin{figure}
+  \centering
+  \includegraphics[height=3cm]{image4.png}
+  \caption{Height and no label}
+\end{figure}
+
+\subsection{Bad figure - missing caption}
+\begin{figure}
+  \centering
+  \includegraphics{image5.png}
+  \label{fig:no_caption}
+\end{figure}
+
+\subsection{Bad figure - caption above figure}
+\begin{figure}
+  \centering
+  \label{fig:caption_above}
+  \caption{Caption above}
+  \includegraphics{image6.png}
+\end{figure}
+
+\end{document}
