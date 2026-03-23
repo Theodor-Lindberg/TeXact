@@ -22,7 +22,10 @@ class Reviewer_ould(Reviewer):
             self.match_count += len(matches)
 
     def get_summary(self) -> str:
-        return f"ould-count: {self.match_count}"
+        if not self.match_count:
+            return ""
+        else:
+            return f"ould-count: {self.match_count}"
 
     def get_status(self) -> Status:
         return Status.PASSED if self.match_count == 0 else Status.FAILED

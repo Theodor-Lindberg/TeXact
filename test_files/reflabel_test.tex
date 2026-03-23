@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{hyperref}
+
+\begin{document}
+
+\section{Introduction}
+\label{sec:intro}
+
+This is the introduction section. We refer to Figure~\ref{fig:example} and Section~\ref{sec:methods}.
+
+% This commented reference should be ignored: \ref{commented_ref}
+
+\section{Methods}
+\label{sec:methods}
+
+\begin{figure}
+\caption{An example figure}
+\label{fig:example}
+\end{figure}
+
+This section discusses our methods.
+
+\section{Results}
+% Missing label definition - this references a non-existent label:
+See Table~\ref{tab:results} for the results.
+
+\label{orphaned_section}
+
+\section{Discussion}
+\label{sec:discussion}
+
+We discuss the findings in Section~\ref{sec:discussion}. Refer to \ref{sec:intro} and \ref{sec:methods} for previous sections.
+% This orphaned definition will never be referenced: \label{unused_definition}
+
+\end{document}
