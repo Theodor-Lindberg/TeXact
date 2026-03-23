@@ -5,6 +5,7 @@ from printer import Printer
 from rewiever_ould import Reviewer_ould
 from reviewer_inthis import Reviewer_Inthis
 from reviewer_reflabel import Reviewer_RefLabel
+from reviewer_casing import Reviewer_Casing
 
 
 def str2bool(value: str) -> bool:
@@ -53,7 +54,7 @@ def main():
         raise SystemExit(f"Error: '{file_path}' does not exist or is not a regular file.")
     
     # Add reviewers
-    reviewers = [Reviewer_Inthis(printer), Reviewer_RefLabel(printer)]
+    reviewers = [Reviewer_Inthis(printer), Reviewer_RefLabel(printer), Reviewer_Casing(printer)]
     if args.ould:
         reviewers.append(Reviewer_ould(printer))
 
