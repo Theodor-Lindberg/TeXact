@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "texact"
+version = "0.1.0"
+description = "Automated LaTeX reviewer checks"
+readme = "README.md"
+requires-python = ">=3.12"
+
+[project.scripts]
+texact = "texact:main"
+
+[tool.setuptools]
+package-dir = {"" = "source"}
+py-modules = [
+  "printer",
+  "reviewer",
+  "reviewer_casing",
+  "reviewer_figure",
+  "reviewer_inthis",
+  "reviewer_reflabel",
+  "rewiever_ould",
+  "texact",
+]
