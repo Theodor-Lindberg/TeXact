@@ -5,15 +5,55 @@ from printer import Printer
 
 
 class Reviewer_Casing(Reviewer):
-    # Dictionary mapping lowercase versions to correct spellings
-    CORRECT_SPELLINGS = {
-        "asic": "ASIC",
-        "fpga": "FPGA",
-        "vlsi": "VLSI",
-        "flopoco": "FloPoCo",
-        "ai": "AI",
-        "ml": "ML",
-    }
+    # Canonical spellings to enforce
+    CORRECT_SPELLINGS = (
+        "ASIC",
+        "CMOS",
+        "CORDIC",
+        "FPGA",
+        "VLSI",
+        "FloPoCo",
+        "RTL",
+        "HDL",
+        "FSM",
+        "DNN",
+        "CNN",
+        "ReLU",
+        "PWL",
+        "RAM",
+        "RMS",
+        "Verilog",
+        "SystemVerilog",
+        "VHDL",
+        "AXI",
+        "SRAM",
+        "DSP",
+        "FIFO",
+        "ALU",
+        "PDK",
+        "PLL",
+        "HLS",
+        "AI",
+        "ML",
+        "AMD",
+        "Intel",
+        "Xilinx",
+        "Altera",
+        "Lattice",
+        "LSTM",
+        "TSMC",
+        "FD-SOI",
+        "Synopsys",
+        "Cadence",
+        "Vivado",
+        "Quartus",
+        "URL",
+        "BRAM",
+        "LUT",
+        "LNS",
+        "MNIST"
+    )
+    _PATTERN_LATEX_IGNORED_COMMANDS = re.compile(r"\\(?:ref|label|url)\{[^}]*\}")
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
@@ -25,26 +65,33 @@ class Reviewer_Casing(Reviewer):
         if "%" in line:
             line = line[:line.index("%")]
 
+        # Ignore casing checks inside \ref{...}, \label{...}, and \url{...}
+        line = self._PATTERN_LATEX_IGNORED_COMMANDS.sub("", line)
+
         # Check each word in the line
-        for word_lower, correct_spelling in self.CORRECT_SPELLINGS.items():
+        for correct_spelling in self.CORRECT_SPELLINGS:
+            word_lower = correct_spelling.lower()
             # Create regex pattern to match the word with optional suffixes:
             # - plural 's': fpgas
             # - possessive 's: fpga's
             # - colon suffix: fpga:s
             # - hyphenated compounds: fpga-design
             pattern = re.compile(
-                r"(?<![a-zA-Z])" + re.escape(word_lower) + r"(?:s|'s|:s)?(?=\W|$)",
+                r"(?<![a-zA-Z])(?P<base>" + re.escape(word_lower) + r")(?P<suffix>s|'s|:s)?(?=\W|$)",
                 re.IGNORECASE
             )
             
             for match in pattern.finditer(line):
                 matched_text = match.group(0)
-                # If the matched text doesn't match the correct spelling exactly
-                if matched_text != correct_spelling:
+                matched_base = match.group("base")
+                matched_suffix = (match.group("suffix") or "")
+                normalized_suffix = matched_suffix.lower()
+                expected_text = f"{correct_spelling}{normalized_suffix}"
+                if matched_base != correct_spelling:
                     self.comments.append(
                         (
                             line_no,
-                            f"Incorrect casing: {self.printer.dark_red(matched_text)} should be {self.printer.yellow(correct_spelling)}"
+                            f"Incorrect casing: {self.printer.dark_red(matched_text)} should be {self.printer.yellow(expected_text)}"
                         )
                     )
                     self.mismatch_count += 1
