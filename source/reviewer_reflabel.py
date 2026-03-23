@@ -39,26 +39,34 @@ class Reviewer_RefLabel(Reviewer):
         orphaned_labels = self.defined_labels - self.referenced_labels
         
         messages = []
-        
+
         if missing_labels:
-            for label in sorted(missing_labels):
-                line_no = self.ref_line_map[label]
-                self.printer.print_no(
-                    line_no,
-                    f"Reference to undefined label: {self.printer.dark_red(label)}"
-                )
             messages.append(f"missing-labels: {len(missing_labels)}")
-        
+
         if orphaned_labels:
-            for label in sorted(orphaned_labels):
-                line_no = self.label_line_map[label]
-                self.printer.print_no(
-                    line_no,
-                    f"Label never referenced: {self.printer.dark_red(label)}"
-                )
             messages.append(f"orphaned-labels: {len(orphaned_labels)}")
         
         return " | ".join(messages) if messages else ""
+
+    def get_comments(self) -> list[tuple[int, str]]:
+        missing_labels = self.referenced_labels - self.defined_labels
+        orphaned_labels = self.defined_labels - self.referenced_labels
+
+        comments: list[tuple[int, str]] = []
+
+        for label in missing_labels:
+            line_no = self.ref_line_map[label]
+            comments.append(
+                (line_no, f"Reference to undefined label: {self.printer.dark_red(label)}")
+            )
+
+        for label in orphaned_labels:
+            line_no = self.label_line_map[label]
+            comments.append(
+                (line_no, f"Label never referenced: {self.printer.dark_red(label)}")
+            )
+
+        return comments
 
     def get_status(self) -> Status:
         missing_labels = self.referenced_labels - self.defined_labels

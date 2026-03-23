@@ -20,6 +20,10 @@ class Reviewer(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_comments(self) -> list[tuple[int, str]]:
+        raise NotImplementedError
+
+    @abstractmethod
     def get_summary(self) -> str:
         raise NotImplementedError
     

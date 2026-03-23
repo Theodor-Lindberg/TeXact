@@ -16,6 +16,7 @@ class Reviewer_Inthis(Reviewer):
         self.abstract_context_start = False
         self.check_abstract_first_line = False
         self.abstract_check = Status.UNCHECKED
+        self.comments: list[tuple[int, str]] = []
 
     def process_line(self, line_no: int, line: str) -> None:
         if self.abstract_check == Status.UNCHECKED:
@@ -28,12 +29,17 @@ class Reviewer_Inthis(Reviewer):
                 self.check_abstract_first_line = False
                 if self._PATTERN_THIS_WORK.search(line):
                     self.abstract_check = Status.FAILED
-                    self.printer.print_no(
-                        line_no,
-                        "First line in abstract should not contain 'in this work/brief/paper/manuscript' or 'this paper'.",
+                    self.comments.append(
+                        (
+                            line_no,
+                            "First line in abstract should not contain 'in this work/brief/paper/manuscript' or 'this paper'.",
+                        )
                     )
                 else:
                     self.abstract_check = Status.PASSED
+
+    def get_comments(self) -> list[tuple[int, str]]:
+        return self.comments
 
 
     def get_summary(self) -> str:

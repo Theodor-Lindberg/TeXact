@@ -7,10 +7,19 @@ from reviewer_inthis import Reviewer_Inthis
 from reviewer_reflabel import Reviewer_RefLabel
 
 
+def str2bool(value: str) -> bool:
+    normalized = value.lower()
+    if normalized in {"true", "True", "t", "1", "yes", "y"}:
+        return True
+    if normalized in {"false", "False", "f", "0", "no", "n"}:
+        return False
+    raise argparse.ArgumentTypeError("Expected a boolean value: true/false")
+
+
 def set_up_arg_parser() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Automated LaTeX reviewer(s). Can you pass the judgement?")
     parser.add_argument("-f", "--file", required=True, type=str, help="Path to the LaTeX file")
-    parser.add_argument("--ould", default=True, type=bool, help="Find should|would|could")
+    parser.add_argument("--ould", default=True, type=str2bool, help="Find should|would|could (true/false)")
     return parser.parse_args()
 
 
@@ -19,6 +28,13 @@ def process_file(file_path: Path, reviewers: tuple, printer: Printer) -> int:
         for line_no, line in enumerate(input_file):
             for reviewer in reviewers:
                 reviewer.process_line(line_no, line)
+
+    all_comments: list[tuple[int, str]] = []
+    for reviewer in reviewers:
+        all_comments.extend(reviewer.get_comments())
+
+    for line_no, message in sorted(all_comments, key=lambda comment: comment[0]):
+        printer.print_no(line_no, message)
 
     printer.print("=== Summary ===")
     for reviewer in reviewers:
