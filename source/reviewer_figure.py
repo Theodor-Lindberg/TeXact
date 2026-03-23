@@ -11,6 +11,7 @@ class Reviewer_Figure(Reviewer):
     _PATTERN_SCALE = re.compile(r"(?:scale|width|height)\s*=", re.IGNORECASE)
     _PATTERN_LABEL = re.compile(r"\\label\{")
     _PATTERN_CAPTION = re.compile(r"\\caption(?:\[[^\]]*\])?\{")
+    _PATTERN_CAPTION_CONTENT = re.compile(r"\\caption(?:\[[^\]]*\])?\{([^}]*)\}")
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
@@ -26,6 +27,10 @@ class Reviewer_Figure(Reviewer):
         self.first_caption_line: int | None = None
         self.first_includegraphics_line: int | None = None
         self.includegraphics_lines: list[int] = []
+        self.caption_period_style: bool | None = None
+        self.caption_period_all_same = True
+        self.caption_period_issue_line: int | None = None
+        self.caption_period_issue_added = False
 
     def process_line(self, line_no: int, line: str) -> None:
         # Remove comments (everything after %)
@@ -52,6 +57,16 @@ class Reviewer_Figure(Reviewer):
                 self.has_caption_in_figure = True
                 if self.first_caption_line is None:
                     self.first_caption_line = line_no
+                caption_match = self._PATTERN_CAPTION_CONTENT.search(line)
+                if caption_match:
+                    caption_text = caption_match.group(1).strip()
+                    caption_has_period = caption_text.endswith(".")
+                    if self.caption_period_style is None:
+                        self.caption_period_style = caption_has_period
+                    elif caption_has_period != self.caption_period_style:
+                        self.caption_period_all_same = False
+                        if self.caption_period_issue_line is None:
+                            self.caption_period_issue_line = line_no
 
             # Check for includegraphics
             if self._PATTERN_INCLUDEGRAPHICS.search(line):
@@ -114,7 +129,25 @@ class Reviewer_Figure(Reviewer):
             self.includegraphics_lines = []
 
     def get_comments(self) -> list[tuple[int, str]]:
+        self._add_caption_period_consistency_issue()
         return self.comments
+
+    def _add_caption_period_consistency_issue(self) -> None:
+        if self.caption_period_issue_added:
+            return
+
+        if self.caption_period_all_same:
+            return
+
+        issue_line = self.caption_period_issue_line if self.caption_period_issue_line is not None else 0
+        self.comments.append(
+            (
+                issue_line,
+                "Caption period style mismatch: all figure captions should use the same period style."
+            )
+        )
+        self.error_count += 1
+        self.caption_period_issue_added = True
 
     def get_summary(self) -> str:
         if self.error_count == 0:
