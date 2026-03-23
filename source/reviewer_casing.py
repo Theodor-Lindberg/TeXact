@@ -51,7 +51,7 @@ class Reviewer_Casing(Reviewer):
         "BRAM",
         "LUT",
         "LNS",
-        "MNIST"
+        "MNIST",
     )
     _PATTERN_LATEX_IGNORED_COMMANDS = re.compile(r"\\(?:ref|label|url)\{[^}]*\}")
 
@@ -63,7 +63,7 @@ class Reviewer_Casing(Reviewer):
     def process_line(self, line_no: int, line: str) -> None:
         # Remove comments (everything after %)
         if "%" in line:
-            line = line[:line.index("%")]
+            line = line[: line.index("%")]
 
         # Ignore casing checks inside \ref{...}, \label{...}, and \url{...}
         line = self._PATTERN_LATEX_IGNORED_COMMANDS.sub("", line)
@@ -77,21 +77,23 @@ class Reviewer_Casing(Reviewer):
             # - colon suffix: fpga:s
             # - hyphenated compounds: fpga-design
             pattern = re.compile(
-                r"(?<![a-zA-Z])(?P<base>" + re.escape(word_lower) + r")(?P<suffix>s|'s|:s)?(?=\W|$)",
-                re.IGNORECASE
+                r"(?<![a-zA-Z])(?P<base>"
+                + re.escape(word_lower)
+                + r")(?P<suffix>s|'s|:s)?(?=\W|$)",
+                re.IGNORECASE,
             )
-            
+
             for match in pattern.finditer(line):
                 matched_text = match.group(0)
                 matched_base = match.group("base")
-                matched_suffix = (match.group("suffix") or "")
+                matched_suffix = match.group("suffix") or ""
                 normalized_suffix = matched_suffix.lower()
                 expected_text = f"{correct_spelling}{normalized_suffix}"
                 if matched_base != correct_spelling:
                     self.comments.append(
                         (
                             line_no,
-                            f"Incorrect casing: {self.printer.dark_red(matched_text)} should be {self.printer.yellow(expected_text)}"
+                            f"Incorrect casing: {self.printer.dark_red(matched_text)} should be {self.printer.yellow(expected_text)}",
                         )
                     )
                     self.mismatch_count += 1

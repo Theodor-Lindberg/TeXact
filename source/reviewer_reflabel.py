@@ -13,20 +13,20 @@ class Reviewer_RefLabel(Reviewer):
         self.defined_labels = set()
         self.referenced_labels = set()
         self.label_line_map = {}  # Maps label name to first line number it was defined
-        self.ref_line_map = {}    # Maps reference name to first line number it was referenced
+        self.ref_line_map = {}  # Maps reference name to first line number it was referenced
 
     def process_line(self, line_no: int, line: str) -> None:
         # Remove comments (everything after %)
         if "%" in line:
-            line = line[:line.index("%")]
-        
+            line = line[: line.index("%")]
+
         # Extract all \label{...} patterns
         label_matches = self._PATTERN_LABEL.findall(line)
         for label_name in label_matches:
             if label_name not in self.defined_labels:
                 self.defined_labels.add(label_name)
                 self.label_line_map[label_name] = line_no
-        
+
         # Extract all \ref{...} patterns
         ref_matches = self._PATTERN_REF.findall(line)
         for ref_name in ref_matches:
@@ -37,7 +37,7 @@ class Reviewer_RefLabel(Reviewer):
     def get_summary(self) -> str:
         missing_labels = self.referenced_labels - self.defined_labels
         orphaned_labels = self.defined_labels - self.referenced_labels
-        
+
         messages = []
 
         if missing_labels:
@@ -45,7 +45,7 @@ class Reviewer_RefLabel(Reviewer):
 
         if orphaned_labels:
             messages.append(f"orphaned-labels: {len(orphaned_labels)}")
-        
+
         return " | ".join(messages) if messages else ""
 
     def get_comments(self) -> list[tuple[int, str]]:
@@ -57,7 +57,10 @@ class Reviewer_RefLabel(Reviewer):
         for label in missing_labels:
             line_no = self.ref_line_map[label]
             comments.append(
-                (line_no, f"Reference to undefined label: {self.printer.dark_red(label)}")
+                (
+                    line_no,
+                    f"Reference to undefined label: {self.printer.dark_red(label)}",
+                )
             )
 
         for label in orphaned_labels:
@@ -71,7 +74,7 @@ class Reviewer_RefLabel(Reviewer):
     def get_status(self) -> Status:
         missing_labels = self.referenced_labels - self.defined_labels
         orphaned_labels = self.defined_labels - self.referenced_labels
-        
+
         if missing_labels or orphaned_labels:
             return Status.FAILED
         return Status.PASSED

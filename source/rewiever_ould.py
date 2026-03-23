@@ -36,6 +36,6 @@ class Reviewer_ould(Reviewer):
 
     def find_ould(self, line: str) -> list[str]:
         return self._PATTERN.findall(line)
-    
+
     def get_name(self) -> str:
         return "Ould"

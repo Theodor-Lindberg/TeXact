@@ -17,7 +17,7 @@ class Reviewer_Figure(Reviewer):
         self.printer = printer
         self.comments: list[tuple[int, str]] = []
         self.error_count = 0
-        
+
         # Track figure environment state
         self.in_figure = False
         self.figure_start_line = -1
@@ -35,7 +35,7 @@ class Reviewer_Figure(Reviewer):
     def process_line(self, line_no: int, line: str) -> None:
         # Remove comments (everything after %)
         if "%" in line:
-            line = line[:line.index("%")]
+            line = line[: line.index("%")]
 
         # Check for figure environment start
         if self._PATTERN_BEGIN_FIGURE.search(line):
@@ -79,7 +79,7 @@ class Reviewer_Figure(Reviewer):
                     self.comments.append(
                         (
                             line_no,
-                            f"Image should not be scaled: {self.printer.dark_red('remove scale/width/height')}"
+                            f"Image should not be scaled: {self.printer.dark_red('remove scale/width/height')}",
                         )
                     )
                     self.error_count += 1
@@ -92,7 +92,7 @@ class Reviewer_Figure(Reviewer):
                     self.comments.append(
                         (
                             self.figure_start_line,
-                            f"Figure environment should contain a {self.printer.dark_red('\\\\label{{...}}')}"
+                            f"Figure environment should contain a {self.printer.dark_red('\\\\label{{...}}')}",
                         )
                     )
                     self.error_count += 1
@@ -101,7 +101,7 @@ class Reviewer_Figure(Reviewer):
                     self.comments.append(
                         (
                             self.figure_start_line,
-                            f"Figure environment should contain a {self.printer.dark_red('\\\\caption{{...}}')}"
+                            f"Figure environment should contain a {self.printer.dark_red('\\\\caption{{...}}')}",
                         )
                     )
                     self.error_count += 1
@@ -114,7 +114,7 @@ class Reviewer_Figure(Reviewer):
                     self.comments.append(
                         (
                             self.first_caption_line,
-                            "Figure caption should be below the graphics."
+                            "Figure caption should be below the graphics.",
                         )
                     )
                     self.error_count += 1
@@ -139,11 +139,15 @@ class Reviewer_Figure(Reviewer):
         if self.caption_period_all_same:
             return
 
-        issue_line = self.caption_period_issue_line if self.caption_period_issue_line is not None else 0
+        issue_line = (
+            self.caption_period_issue_line
+            if self.caption_period_issue_line is not None
+            else 0
+        )
         self.comments.append(
             (
                 issue_line,
-                "Caption period style mismatch: all figure captions should use the same period style."
+                "Caption period style mismatch: all figure captions should use the same period style.",
             )
         )
         self.error_count += 1

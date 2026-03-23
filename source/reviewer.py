@@ -26,12 +26,11 @@ class Reviewer(ABC):
     @abstractmethod
     def get_summary(self) -> str:
         raise NotImplementedError
-    
+
     @abstractmethod
     def get_status(self) -> Status:
         raise NotImplementedError
-    
+
     @abstractmethod
     def get_name(self) -> str:
         raise NotImplementedError
-

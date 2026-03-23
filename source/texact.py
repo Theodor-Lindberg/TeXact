@@ -19,9 +19,18 @@ def str2bool(value: str) -> bool:
 
 
 def set_up_arg_parser() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Automated LaTeX reviewer(s). Can you pass the judgement?")
-    parser.add_argument("-f", "--file", required=True, type=str, help="Path to the LaTeX file")
-    parser.add_argument("--ould", default=True, type=str2bool, help="Find should|would|could (true/false)")
+    parser = argparse.ArgumentParser(
+        description="Automated LaTeX reviewer(s). Can you pass the judgement?"
+    )
+    parser.add_argument(
+        "-f", "--file", required=True, type=str, help="Path to the LaTeX file"
+    )
+    parser.add_argument(
+        "--ould",
+        default=True,
+        type=str2bool,
+        help="Find should|would|could (true/false)",
+    )
     return parser.parse_args()
 
 
@@ -52,10 +61,17 @@ def main():
     printer = Printer()
 
     if not file_path.is_file():
-        raise SystemExit(f"Error: '{file_path}' does not exist or is not a regular file.")
-    
+        raise SystemExit(
+            f"Error: '{file_path}' does not exist or is not a regular file."
+        )
+
     # Add reviewers
-    reviewers = [Reviewer_Inthis(printer), Reviewer_RefLabel(printer), Reviewer_Casing(printer), Reviewer_Figure(printer)]
+    reviewers = [
+        Reviewer_Inthis(printer),
+        Reviewer_RefLabel(printer),
+        Reviewer_Casing(printer),
+        Reviewer_Figure(printer),
+    ]
     if args.ould:
         reviewers.append(Reviewer_ould(printer))
 

@@ -16,12 +16,12 @@ class Printer:
         print(message)
 
     def print_no(self, line_no: int, message: str) -> None:
-        line_no = f"L{line_no+1}:"
+        line_no = f"L{line_no + 1}:"
         print(f"{self.green(line_no)} {message}")
 
     def green(self, message: str) -> str:
         return f"{self.GREEN}{message}{self.RESET}"
-    
+
     def yellow(self, message: str) -> str:
         return f"{self.YELLOW}{message}{self.RESET}"
 

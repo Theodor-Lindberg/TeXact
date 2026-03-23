@@ -25,7 +25,7 @@ class Reviewer_Inthis(Reviewer):
                 return
 
         if self.check_abstract_first_line:
-            if line and line[0] != '%': # Skip empty lines and comments
+            if line and line[0] != "%":  # Skip empty lines and comments
                 self.check_abstract_first_line = False
                 if self._PATTERN_THIS_WORK.search(line):
                     self.abstract_check = Status.FAILED
@@ -41,12 +41,11 @@ class Reviewer_Inthis(Reviewer):
     def get_comments(self) -> list[tuple[int, str]]:
         return self.comments
 
-
     def get_summary(self) -> str:
         return ""
 
     def get_status(self) -> Status:
         return self.abstract_check
-        
+
     def get_name(self) -> str:
         return "InThisWork"
