@@ -1,6 +1,13 @@
 from abc import ABC, abstractmethod
+from enum import Enum, auto
 
 from printer import Printer
+
+
+class Status(Enum):
+    PASSED = auto()
+    FAILED = auto()
+    UNCHECKED = auto()
 
 
 class Reviewer(ABC):
@@ -13,5 +20,14 @@ class Reviewer(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def summarize(self) -> None:
+    def get_summary(self) -> str:
         raise NotImplementedError
+    
+    @abstractmethod
+    def get_status(self) -> Status:
+        raise NotImplementedError
+    
+    @abstractmethod
+    def get_name(self) -> str:
+        raise NotImplementedError
+

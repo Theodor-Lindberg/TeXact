@@ -3,6 +3,7 @@ import argparse
 from pathlib import Path
 from printer import Printer
 from rewiever_ould import Reviewer_ould
+from reviewer_inthis import Reviewer_Inthis
 
 
 def set_up_arg_parser() -> argparse.Namespace:
@@ -12,14 +13,18 @@ def set_up_arg_parser() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def process_file(file_path: Path, reviewers: tuple) -> int:
+def process_file(file_path: Path, reviewers: tuple, printer: Printer) -> int:
     with file_path.open("r", encoding="utf-8") as input_file:
         for line_no, line in enumerate(input_file):
             for reviewer in reviewers:
                 reviewer.process_line(line_no, line)
 
+    printer.print("=== Summary ===")
     for reviewer in reviewers:
-        reviewer.summarize()
+        name = reviewer.get_name()
+        status = printer.status_str(reviewer.get_status())
+        summary = reviewer.get_summary()
+        printer.print(f"Reviewer {name}: {status}. {summary}")
 
 
 def main():
@@ -31,12 +36,11 @@ def main():
         raise SystemExit(f"Error: '{file_path}' does not exist or is not a regular file.")
     
     # Add reviewers
-    reviewers = []
+    reviewers = [Reviewer_Inthis(printer)]
     if args.ould:
         reviewers.append(Reviewer_ould(printer))
 
-    process_file(file_path, tuple(reviewers))
-    #print(f"ould-count: {match_count}")
+    process_file(file_path, tuple(reviewers), printer)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 import re
 
-from reviewer import Reviewer
+from reviewer import Reviewer, Status
 from printer import Printer
 
 
@@ -21,8 +21,14 @@ class Reviewer_ould(Reviewer):
             self.printer.print_no(line_no, message)
             self.match_count += len(matches)
 
-    def summarize(self) -> None:
-        self.printer.print(f"ould-count: {self.match_count}")
+    def get_summary(self) -> str:
+        return f"ould-count: {self.match_count}"
+
+    def get_status(self) -> Status:
+        return Status.PASSED if self.match_count == 0 else Status.FAILED
 
     def find_ould(self, line: str) -> list[str]:
         return self._PATTERN.findall(line)
+    
+    def get_name(self) -> str:
+        return "Ould"
