@@ -27,8 +27,15 @@ class Reviewer_Casing(Reviewer):
 
         # Check each word in the line
         for word_lower, correct_spelling in self.CORRECT_SPELLINGS.items():
-            # Create regex pattern to find case-insensitive matches with word boundaries
-            pattern = re.compile(r"\b" + re.escape(word_lower) + r"\b", re.IGNORECASE)
+            # Create regex pattern to match the word with optional suffixes:
+            # - plural 's': fpgas
+            # - possessive 's: fpga's
+            # - colon suffix: fpga:s
+            # - hyphenated compounds: fpga-design
+            pattern = re.compile(
+                r"(?<![a-zA-Z])" + re.escape(word_lower) + r"(?:s|'s|:s)?(?=\W|$)",
+                re.IGNORECASE
+            )
             
             for match in pattern.finditer(line):
                 matched_text = match.group(0)
