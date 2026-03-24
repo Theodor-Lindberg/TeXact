@@ -51,4 +51,4 @@ jobs:
         run: texact -h
 
       - name: Run texact on each LaTeX, making sure nothing crashes
-        run: python -m pytest -q test_files/test.py
+        run: python -m pytest -q test/test.py

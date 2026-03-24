@@ -9,15 +9,6 @@ from reviewer_casing import Reviewer_Casing
 from reviewer_figure import Reviewer_Figure
 
 
-def str2bool(value: str) -> bool:
-    normalized = value.lower()
-    if normalized in {"true", "True", "t", "1", "yes", "y"}:
-        return True
-    if normalized in {"false", "False", "f", "0", "no", "n"}:
-        return False
-    raise argparse.ArgumentTypeError("Expected a boolean value: true/false")
-
-
 def set_up_arg_parser() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Automated LaTeX reviewer(s). Can you pass the judgement?"
@@ -28,8 +19,8 @@ def set_up_arg_parser() -> argparse.Namespace:
     parser.add_argument(
         "--ould",
         default=True,
-        type=str2bool,
-        help="Find should|would|could (true/false)",
+        action=argparse.BooleanOptionalAction,
+        help="Find should|would|could",
     )
     return parser.parse_args()
 
