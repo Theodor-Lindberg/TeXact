@@ -2,24 +2,29 @@
 
 TeXact is a tool for finding miscellaneous mistakes in LaTeX code
 and article writing.
+It does not edit your files, so you can run it fearlessly.
+It is also not intended to replace existing tools, such as
+[ChkTeX](https://www.nongnu.org/chktex/) and
+[lacheck](https://linux.die.net/man/1/lacheck), but rather to
+complement and incorporate them.
 
 ## Installation
 
-TeXact can be installed using pip:
-
-```bash
-python -m pip install .
-```
-
-or directly from git:
+TeXact can be installed using pip, either directly from git:
 
 ```bash
 python -m pip install "git+ssh://git@github.com/Theodor-Lindberg/TeXact.git"
 ```
 
+or after cloning the repository:
+
+```bash
+python -m pip install .
+```
+
 ## Usage
 
-After installation, run TeXact from the command line:
+After installing, run TeXact from the command line:
 
 ```bash
 texact -f path/to/file.tex
@@ -48,7 +53,9 @@ focus. The reviewers keep track of their comments as the LaTeX file is
 processed line by line.
 Once the entire file has passed, all comments are printed to the
 console, referencing line numbers.
-A summary is also output at the end.
+A summary is also outputted at the end.
+As the reviewers are independent of one another, adding new ones
+shouldn't break existing features.
 
 ### Adding a reviewer
 
