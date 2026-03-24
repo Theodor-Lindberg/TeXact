@@ -155,20 +155,22 @@ class Reviewer_ChkTeX(Reviewer):
     def _format_context_lines(self, context_lines: list[str], kind: str) -> list[str]:
         formatted_lines: list[str] = []
         for line in context_lines:
-            if line.strip() == "^":
+            stripped = line.strip()
+            if stripped and set(stripped) == {"^"}:
                 leading_space_count = len(line) - len(line.lstrip())
                 leading_spaces = " " * leading_space_count
-                caret = self._color_caret(kind)
+                caret = self._color_caret(kind, len(stripped))
                 formatted_lines.append(f"{leading_spaces}{caret}")
             else:
                 formatted_lines.append(line)
 
         return formatted_lines
 
-    def _color_caret(self, kind: str) -> str:
+    def _color_caret(self, kind: str, count: int) -> str:
+        caret_text = "^" * count
         if kind == "Warning":
-            return self.printer.yellow("^")
-        return self.printer.dark_red("^")
+            return self.printer.yellow(caret_text)
+        return self.printer.dark_red(caret_text)
 
     def get_summary(self) -> str:
         if not self._has_run:
