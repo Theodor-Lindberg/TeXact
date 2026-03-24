@@ -6,6 +6,7 @@ from pathlib import Path
 
 from printer import Printer
 from reviewer import Reviewer, Status
+from template_check import Template
 
 
 class Reviewer_ChkTeX(Reviewer):
@@ -14,10 +15,13 @@ class Reviewer_ChkTeX(Reviewer):
         r"^L(?P<line>\d+):\s+(?P<kind>Warning|Error)\s+(?P<code>\d+)\.\s+(?P<message>.*)$"
     )
 
-    def __init__(self, printer: Printer, tex_file_path: Path) -> None:
+    def __init__(
+        self, printer: Printer, tex_file_path: Path, template: Template
+    ) -> None:
         self.printer = printer
         self.tex_file_path = tex_file_path.resolve()
         self.repo_root = Path(__file__).resolve().parent.parent
+        self.template = template
 
         self.comments: list[tuple[int, str]] = []
         self.version = "unknown"
@@ -52,6 +56,12 @@ class Reviewer_ChkTeX(Reviewer):
             "-v7",
             str(self.tex_file_path),
         ]
+
+        if self.template == Template.IEEE or self.template == Template.LLNCS:
+            command += [
+                "-n12",
+                "-n13",
+            ]  # French spacing is used so these should be ignored.
 
         try:
             run_env = os.environ.copy()

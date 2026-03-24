@@ -8,6 +8,7 @@ from reviewer_reflabel import Reviewer_RefLabel
 from reviewer_casing import Reviewer_Casing
 from reviewer_figure import Reviewer_Figure
 from reviewer_chktex import Reviewer_ChkTeX
+from template_check import get_template
 
 
 def set_up_arg_parser() -> argparse.Namespace:
@@ -63,6 +64,8 @@ def main():
             f"Error: '{file_path}' does not exist or is not a regular file."
         )
 
+    template = get_template(file_path)
+
     # Add reviewers
     reviewers = [
         Reviewer_Inthis(printer),
@@ -73,7 +76,7 @@ def main():
     if args.ould:
         reviewers.append(Reviewer_ould(printer))
     if args.chktex:
-        reviewers.append(Reviewer_ChkTeX(printer, file_path))
+        reviewers.append(Reviewer_ChkTeX(printer, file_path, template))
 
     process_file(file_path, tuple(reviewers), printer)
 
