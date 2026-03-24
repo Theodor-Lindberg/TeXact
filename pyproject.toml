@@ -19,6 +19,7 @@ py-modules = [
   "printer",
   "reviewer",
   "reviewer_casing",
+  "reviewer_chktex",
   "reviewer_figure",
   "reviewer_inthis",
   "reviewer_reflabel",

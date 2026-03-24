@@ -7,6 +7,7 @@ from reviewer_inthis import Reviewer_Inthis
 from reviewer_reflabel import Reviewer_RefLabel
 from reviewer_casing import Reviewer_Casing
 from reviewer_figure import Reviewer_Figure
+from reviewer_chktex import Reviewer_ChkTeX
 
 
 def set_up_arg_parser() -> argparse.Namespace:
@@ -21,6 +22,12 @@ def set_up_arg_parser() -> argparse.Namespace:
         default=True,
         action=argparse.BooleanOptionalAction,
         help="Find should|would|could",
+    )
+    parser.add_argument(
+        "--chktex",
+        default=True,
+        action=argparse.BooleanOptionalAction,
+        help="Run chktex with config/chktexrc",
     )
     return parser.parse_args()
 
@@ -65,6 +72,8 @@ def main():
     ]
     if args.ould:
         reviewers.append(Reviewer_ould(printer))
+    if args.chktex:
+        reviewers.append(Reviewer_ChkTeX(printer, file_path))
 
     process_file(file_path, tuple(reviewers), printer)
 

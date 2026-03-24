@@ -43,6 +43,7 @@ texact -h
 3. **InThis:** Don't start the abstract with "In this work" or similar.
 4. **Casing:** Make sure certain words have correct casing.
 5. **Figure:** Things related to figures.
+6. **ChkTeX:** Runs ChkTeX checks.
 
 ## Contributing
 
