@@ -1,6 +1,7 @@
 import os
 import re
 import subprocess
+from importlib import resources
 from pathlib import Path
 
 from printer import Printer
@@ -33,10 +34,21 @@ class Reviewer_ChkTeX(Reviewer):
             return self.comments
 
         self._has_run = True
+        chktexrc_path = self._resolve_chktexrc_path()
+        if chktexrc_path is None:
+            self.execution_failed = True
+            self.comments.append(
+                (
+                    0,
+                    "ChkTeX config file not found. Expected config/chktexrc or packaged texact_config/chktexrc.",
+                )
+            )
+            return self.comments
+
         command = [
             "chktex",
             "-l",
-            "config/chktexrc",
+            str(chktexrc_path),
             "-v7",
             str(self.tex_file_path),
         ]
@@ -192,3 +204,17 @@ class Reviewer_ChkTeX(Reviewer):
             for entry in path_value.split(os.pathsep)
         ]
         return os.pathsep.join(expanded_entries)
+
+    def _resolve_chktexrc_path(self) -> Path | None:
+        repo_config_path = self.repo_root / "config" / "chktexrc"
+        if repo_config_path.is_file():
+            return repo_config_path
+
+        try:
+            resource_file = resources.files("texact_config").joinpath("chktexrc")
+            if resource_file.is_file():
+                return Path(str(resource_file))
+        except (FileNotFoundError, ModuleNotFoundError):
+            return None
+
+        return None
