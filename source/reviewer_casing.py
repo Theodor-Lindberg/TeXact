@@ -25,7 +25,7 @@ class Reviewer_Casing(Reviewer):
         "Verilog",
         "SystemVerilog",
         "VHDL",
-        "AXI",
+        # "AXI", # collides with the word axis
         "SRAM",
         "DSP",
         "FIFO",
@@ -53,7 +53,7 @@ class Reviewer_Casing(Reviewer):
         "LNS",
         "MNIST",
     )
-    _PATTERN_LATEX_IGNORED_COMMANDS = re.compile(r"\\(?:ref|label|url)\{[^}]*\}")
+    _PATTERN_LATEX_IGNORED_COMMANDS = re.compile(r"\\(?:cite|ref|label|url)\{[^}]*\}")
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
@@ -65,7 +65,7 @@ class Reviewer_Casing(Reviewer):
         if "%" in line:
             line = line[: line.index("%")]
 
-        # Ignore casing checks inside \ref{...}, \label{...}, and \url{...}
+        # Ignore casing checks inside \cite{...}, \ref{...}, \label{...}, and \url{...}
         line = self._PATTERN_LATEX_IGNORED_COMMANDS.sub("", line)
 
         # Check each word in the line
