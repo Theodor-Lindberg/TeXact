@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+\section{IEEE Biography Tests}
+
+% Valid size and multiline IEEEbiography block
+\begin{IEEEbiography}
+[{\includegraphics{assets/bio_ok.png}}]
+{Jane Doe}
+Biography text.
+\end{IEEEbiography}
+
+% Invalid physical image size
+\begin{IEEEbiography}
+[{\includegraphics{assets/bio_bad_size.png}}]
+{John Doe}
+Biography text.
+\end{IEEEbiography}
+
+% Same invalid image but alternate closing token that reviewer should support
+\begin{IEEEbiography}
+[{\includegraphics{assets/bio_bad_size.png}}]
+{Alex Doe}
+Biography text.
+\end{IEEEbibliography}
+
+\end{document}

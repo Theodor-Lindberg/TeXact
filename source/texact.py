@@ -61,7 +61,7 @@ def main():
         Reviewer_Inthis(printer),
         Reviewer_RefLabel(printer),
         Reviewer_Casing(printer),
-        Reviewer_Figure(printer),
+        Reviewer_Figure(printer, file_path),
     ]
     if args.ould:
         reviewers.append(Reviewer_ould(printer))

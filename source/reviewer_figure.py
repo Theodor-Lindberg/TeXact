@@ -1,4 +1,6 @@
 import re
+from pathlib import Path
+from PIL import Image
 
 from reviewer import Reviewer, Status
 from printer import Printer
@@ -14,10 +16,18 @@ class Reviewer_Figure(Reviewer):
     _PATTERN_LABEL = re.compile(r"\\label\{")
     _PATTERN_CAPTION = re.compile(r"\\caption(?:\[[^\]]*\])?\{")
     _PATTERN_CAPTION_CONTENT = re.compile(r"\\caption(?:\[[^\]]*\])?\{([^}]*)\}")
+    _PATTERN_BEGIN_IEEE_BIOGRAPHY = re.compile(r"\\begin\{IEEEbiography\}")
+    _PATTERN_END_IEEE_BIOGRAPHY = re.compile(r"\\end\{IEEE(?:biography|bibliography)\}")
+    _PATTERN_INCLUDEGRAPHICS_PATH = re.compile(
+        r"\\includegraphics(?:\[(?P<options>[^\]]*)\])?\{(?P<path>[^}]+)\}"
+    )
     _ALLOWED_POSITIONS = {"bt", "t", "b", "tb"}
+    _IEEE_BIO_REQUIRED_RATIO = 1.25
+    _IEEE_BIO_RATIO_TOLERANCE = 0.01
 
-    def __init__(self, printer: Printer) -> None:
+    def __init__(self, printer: Printer, tex_file_path: Path) -> None:
         self.printer = printer
+        self.tex_dir = tex_file_path.parent
         self.comments: list[tuple[int, str]] = []
         self.error_count = 0
 
@@ -34,6 +44,11 @@ class Reviewer_Figure(Reviewer):
         self.caption_period_all_same = True
         self.caption_period_issue_line: int | None = None
         self.caption_period_issue_added = False
+
+        # Track IEEEbiography context (can span multiple lines)
+        self.in_ieee_biography = False
+        self.ieee_biography_start_line = -1
+        self.ieee_biography_lines: list[str] = []
 
     def process_line(self, line_no: int, line: str) -> None:
         # Remove comments (everything after %)
@@ -98,6 +113,8 @@ class Reviewer_Figure(Reviewer):
                     )
                     self.error_count += 1
 
+        self._process_ieee_biography_context(line_no, line)
+
         # Check for figure environment end
         if self._PATTERN_END_FIGURE.search(line):
             if self.in_figure:
@@ -143,6 +160,8 @@ class Reviewer_Figure(Reviewer):
             self.includegraphics_lines = []
 
     def get_comments(self) -> list[tuple[int, str]]:
+        if self.in_ieee_biography and self.ieee_biography_lines:
+            self._finalize_ieee_biography_context()
         self._add_caption_period_consistency_issue()
         return self.comments
 
@@ -166,6 +185,92 @@ class Reviewer_Figure(Reviewer):
         )
         self.error_count += 1
         self.caption_period_issue_added = True
+
+    def _process_ieee_biography_context(self, line_no: int, line: str) -> None:
+        if self._PATTERN_BEGIN_IEEE_BIOGRAPHY.search(line):
+            self.in_ieee_biography = True
+            self.ieee_biography_start_line = line_no
+            self.ieee_biography_lines = [line]
+            if self._PATTERN_END_IEEE_BIOGRAPHY.search(line):
+                self._finalize_ieee_biography_context()
+            return
+
+        if not self.in_ieee_biography:
+            return
+
+        self.ieee_biography_lines.append(line)
+        if self._PATTERN_END_IEEE_BIOGRAPHY.search(line):
+            self._finalize_ieee_biography_context()
+
+    def _finalize_ieee_biography_context(self) -> None:
+        block_text = "\n".join(self.ieee_biography_lines)
+        self._check_ieee_biography(self.ieee_biography_start_line, block_text)
+        self.in_ieee_biography = False
+        self.ieee_biography_start_line = -1
+        self.ieee_biography_lines = []
+
+    def _check_ieee_biography(self, line_no: int, biography_block: str) -> None:
+        includegraphics_match = self._PATTERN_INCLUDEGRAPHICS_PATH.search(
+            biography_block
+        )
+        if includegraphics_match is None:
+            return
+
+        graphics_path = includegraphics_match.group("path")
+        resolved_path = self._resolve_graphics_path(graphics_path)
+        if resolved_path is None:
+            self.comments.append(
+                (
+                    line_no,
+                    (
+                        "IEEEbiography image file not found relative to tex file: "
+                        f"{graphics_path}"
+                    ),
+                )
+            )
+            self.error_count += 1
+            return
+
+        is_valid_size, size_message = self._is_ieee_biography_image_size_valid(
+            resolved_path
+        )
+        if not is_valid_size:
+            self.comments.append(
+                (
+                    line_no,
+                    (
+                        "IEEEbiography image must have height/width ratio "
+                        f"{self._IEEE_BIO_REQUIRED_RATIO:.2f}; {size_message}"
+                    ),
+                )
+            )
+            self.error_count += 1
+
+    def _is_ieee_biography_image_size_valid(self, image_path: Path) -> tuple[bool, str]:
+        with Image.open(image_path) as image:
+            width_px, height_px = image.size
+
+        if width_px <= 0:
+            return False, "image width is invalid"
+
+        actual_ratio = height_px / width_px
+        ratio_ok = (
+            abs(actual_ratio - self._IEEE_BIO_REQUIRED_RATIO)
+            <= self._IEEE_BIO_RATIO_TOLERANCE
+        )
+        if ratio_ok:
+            return True, ""
+
+        return (
+            False,
+            (f"actual ratio is {actual_ratio:.3f} (from {width_px}x{height_px}px)"),
+        )
+
+    def _resolve_graphics_path(self, graphics_path: str) -> Path | None:
+        candidate = self.tex_dir / graphics_path
+        if candidate.is_file():
+            return candidate
+        return None
 
     def get_summary(self) -> str:
         if self.error_count == 0:
