@@ -2,15 +2,20 @@
 
 from typing import TYPE_CHECKING
 
+from colorama import Fore, Style, init as colorama_init
+
 if TYPE_CHECKING:  # Only for type hints
     from reviewer import Status
 
 
 class Printer:
-    GREEN = "\033[32m"
-    DARK_RED = "\033[38;5;88m"
-    YELLOW = "\033[33m"
-    RESET = "\033[0m"
+    GREEN = Fore.GREEN
+    DARK_RED = Fore.RED
+    YELLOW = Fore.YELLOW
+    RESET = Style.RESET_ALL
+
+    def __init__(self) -> None:
+        colorama_init()
 
     def print(self, message: str) -> None:
         print(message)
