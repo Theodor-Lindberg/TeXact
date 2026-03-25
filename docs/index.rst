@@ -1,12 +1,12 @@
 .. TeXact documentation master file
 
-Welcome to TeXact's documentation!
+TeXact's documentation
 ==================================
 
 TeXact is a tool for finding miscellaneous mistakes in LaTeX code and article writing.
 
 The repository can be found at `GitHub <https://github.com/Theodor-Lindberg/TeXact>`_. Please
-report any issues or suggestions there. Contributions are also welcome!
+report any issues or suggestions there. Contributions are also welcome.
 
 Installation
 ------------
@@ -57,10 +57,5 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. image:: _static/texactlogo-white.svg
-   :class: only-dark
-   :scale: 500%
-
-.. image:: _static/texactlogo-black.svg
-   :class: only-light
+.. image:: _static/texactlogo.svg
    :scale: 500%
