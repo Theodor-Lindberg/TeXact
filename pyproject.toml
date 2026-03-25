@@ -24,7 +24,7 @@ py-modules = [
   "reviewer_figure",
   "reviewer_inthis",
   "reviewer_reflabel",
-  "rewiever_ould",
+  "reviewer_unsure",
   "template_check",
   "texact",
 ]

@@ -2,7 +2,7 @@ import argparse
 
 from pathlib import Path
 from printer import Printer
-from rewiever_ould import Reviewer_ould
+from reviewer_unsure import Reviewer_Unsure
 from reviewer_inthis import Reviewer_Inthis
 from reviewer_reflabel import Reviewer_RefLabel
 from reviewer_casing import Reviewer_Casing
@@ -19,10 +19,10 @@ def set_up_arg_parser() -> argparse.Namespace:
         "-f", "--file", required=True, type=str, help="Path to the LaTeX file"
     )
     parser.add_argument(
-        "--ould",
+        "--unsure",
         default=True,
         action=argparse.BooleanOptionalAction,
-        help="Find should|would|could",
+        help="Find should|would|could|might",
     )
     parser.add_argument(
         "--chktex",
@@ -73,8 +73,8 @@ def main():
         Reviewer_Casing(printer),
         Reviewer_Figure(printer, file_path),
     ]
-    if args.ould:
-        reviewers.append(Reviewer_ould(printer))
+    if args.unsure:
+        reviewers.append(Reviewer_Unsure(printer))
     if args.chktex:
         reviewers.append(Reviewer_ChkTeX(printer, file_path, template))
 

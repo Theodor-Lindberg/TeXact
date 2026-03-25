@@ -4,8 +4,8 @@ from reviewer import Reviewer, Status
 from printer import Printer
 
 
-class Reviewer_ould(Reviewer):
-    _PATTERN = re.compile(r"\b(?:should|would|could)\b", re.IGNORECASE)
+class Reviewer_Unsure(Reviewer):
+    _PATTERN = re.compile(r"\b(?:should|would|could|might)\b", re.IGNORECASE)
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
