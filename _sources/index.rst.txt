@@ -13,7 +13,7 @@ Installation
 
 TeXact can be installed using pip, either directly from git or after cloning the repository.
 
-.. admonition:: Install APyTypes from git
+.. admonition:: Install TeXact from git
 
     .. code-block:: console
 
@@ -30,15 +30,15 @@ Usage
 
 After installing, run TeXact from the command line:
 
-```
-texact -f path/to/file.tex
-```
+.. code-block:: console
+
+   $ texact -f path/to/file.tex
 
 For more information, run
 
-```
-texact -h
-```
+.. code-block:: console
+
+   $ texact -h
 
 
 .. toctree::
@@ -47,6 +47,7 @@ texact -h
 
    checklist
    development
+   licenses
 
 
 

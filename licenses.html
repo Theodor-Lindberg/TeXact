@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Licenses" href="licenses.html"><link rel="prev" title="Checklist" href="checklist.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="prev" title="Development" href="development.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Development - TeXact 0.1.0 documentation</title>
+        <title>Licenses - TeXact 0.1.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -172,7 +172,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -193,8 +193,8 @@
   <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="checklist.html">Checklist</a></li>
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Development</a></li>
-<li class="toctree-l1"><a class="reference internal" href="licenses.html">Licenses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Licenses</a></li>
 </ul>
 
 </div>
@@ -215,7 +215,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="_sources/development.rst.txt" title="View this page">
+  <a class="muted-link" href="_sources/licenses.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -228,34 +228,31 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="development">
-<h1>Development<a class="headerlink" href="#development" title="Link to this heading">¶</a></h1>
-<section id="code-structure">
-<h2>Code structure<a class="headerlink" href="#code-structure" title="Link to this heading">¶</a></h2>
-<p>The tool is implemented as a set of reviewers, each with its own
-focus. The reviewers keep track of their comments as the LaTeX file is
-processed line by line.
-Once the entire file has passed, all comments are printed to the
-console, referencing line numbers.
-A summary is also outputted at the end.
-As the reviewers are independent of one another, adding new ones
-shouldn’t break existing features.</p>
-</section>
-<section id="adding-a-reviewer">
-<h2>Adding a reviewer<a class="headerlink" href="#adding-a-reviewer" title="Link to this heading">¶</a></h2>
-<p>All reviewers inherit from the same base class, <em>Reviewer</em>, and
-implements a set of methods: <code class="docutils literal notranslate"><span class="pre">process_line</span></code>, <code class="docutils literal notranslate"><span class="pre">get_comments</span></code>,
-<code class="docutils literal notranslate"><span class="pre">get_summary</span></code>, <code class="docutils literal notranslate"><span class="pre">get_status</span></code>, and <code class="docutils literal notranslate"><span class="pre">get_name</span></code>.
-The easiest way to get started is to copy one of the existing classes,
-e.g. <code class="docutils literal notranslate"><span class="pre">Reviewer_ould</span></code>.
-The main file, <code class="docutils literal notranslate"><span class="pre">texact</span></code>, must then be updated to include the reviewer.
-Command-line arguments can be added as well, if necessary.</p>
-</section>
+          <section id="licenses">
+<h1>Licenses<a class="headerlink" href="#licenses" title="Link to this heading">¶</a></h1>
+<p>TeXact is released under the MIT license:</p>
+<p>MIT License</p>
+<p>Copyright (c) 2026 Theodor Lindberg</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
 </section>
 
         </article>
@@ -263,23 +260,15 @@ Command-line arguments can be added as well, if necessary.</p>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="licenses.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Licenses</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="checklist.html">
+          
+          <a class="prev-page" href="development.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">Checklist</div>
+                <div class="title">Development</div>
                 
               </div>
             </a>
@@ -301,28 +290,8 @@ Command-line arguments can be added as well, if necessary.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">Development</a><ul>
-<li><a class="reference internal" href="#code-structure">Code structure</a></li>
-<li><a class="reference internal" href="#adding-a-reviewer">Adding a reviewer</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>
