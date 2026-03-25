@@ -5,9 +5,47 @@ Welcome to TeXact's documentation!
 
 TeXact is a tool for finding miscellaneous mistakes in LaTeX code and article writing.
 
+The repository can be found at `GitHub <https://github.com/Theodor-Lindberg/TeXact>`_. Please
+report any issues or suggestions there. Contributions are also welcome!
+
+Installation
+------------
+
+TeXact can be installed using pip, either directly from git or after cloning the repository.
+
+.. admonition:: Install APyTypes from git
+
+    .. code-block:: console
+
+        $ python -m pip install "git+ssh://git@github.com/Theodor-Lindberg/TeXact.git"
+
+.. admonition:: Install TeXact after cloning
+
+    .. code-block:: console
+
+        $ python -m pip install .
+
+Usage
+-----
+
+After installing, run TeXact from the command line:
+
+```bash
+texact -f path/to/file.tex
+```
+
+For more information, run
+
+```bash
+texact -h
+```
+
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
+
+   development
 
 
 
@@ -18,4 +56,5 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. image:: _static/texactlogo_v2.svg
+.. image:: _static/texactlogo.svg
+   :scale: 500%
