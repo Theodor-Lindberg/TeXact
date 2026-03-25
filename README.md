@@ -12,23 +12,25 @@ complement and incorporate them.
 
 [https://theodor-lindberg.github.io/TeXact/](https://theodor-lindberg.github.io/TeXact/)
 
-## Installation
+## Features
 
-TeXact can be installed using pip, either directly from git:
+* Check consistency between "\ref" and "\label".
+* Make sure certain words have correct casing.
+* Warn if the abstract begins with "In this work" or similar.
+* Avoid certain modal verbs, such as should, would, could, and might.
+* Run [ChkTeX](https://www.nongnu.org/chktex/), if installed, with "appropriate"
+settings.
+* And more...
+
+## Quickstart
+
+TeXact can be installed using pip directly from git:
 
 ```bash
 python -m pip install "git+ssh://git@github.com/Theodor-Lindberg/TeXact.git"
 ```
 
-or after cloning the repository:
-
-```bash
-python -m pip install .
-```
-
-## Usage
-
-After installing, run TeXact from the command line:
+then run as
 
 ```bash
 texact -f path/to/file.tex
@@ -39,12 +41,3 @@ For more information, run
 ```bash
 texact -h
 ```
-
-## Current reviewers
-
-1. **Unsure:** Avoid should|would|could|might.
-2. **RefLabel:** Checks consistency between "\ref" and "\label".
-3. **InThis:** Don't start the abstract with "In this work" or similar.
-4. **Casing:** Make sure certain words have correct casing.
-5. **Figure:** Things related to figures.
-6. **ChkTeX:** Runs ChkTeX checks.
