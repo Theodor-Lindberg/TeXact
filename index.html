@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Development" href="development.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
         <title>TeXact 0.1.0 documentation</title>
@@ -172,7 +172,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -190,7 +190,11 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+
 </div>
 </div>
 
@@ -222,7 +226,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
@@ -230,8 +234,41 @@
           <section id="welcome-to-texact-s-documentation">
 <h1>Welcome to TeXact’s documentation!<a class="headerlink" href="#welcome-to-texact-s-documentation" title="Link to this heading">¶</a></h1>
 <p>TeXact is a tool for finding miscellaneous mistakes in LaTeX code and article writing.</p>
-<div class="toctree-wrapper compound">
+<p>The repository can be found at <a class="reference external" href="https://github.com/Theodor-Lindberg/TeXact">GitHub</a>. Please
+report any issues or suggestions there. Contributions are also welcome!</p>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
+<p>TeXact can be installed using pip, either directly from git or after cloning the repository.</p>
+<div class="admonition-install-apytypes-from-git admonition">
+<p class="admonition-title">Install APyTypes from git</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;git+ssh://git@github.com/Theodor-Lindberg/TeXact.git&quot;</span>
+</pre></div>
 </div>
+</div>
+<div class="admonition-install-texact-after-cloning admonition">
+<p class="admonition-title">Install TeXact after cloning</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</div>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
+<p>After installing, run TeXact from the command line:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">texact</span> <span class="pre">-f</span> <span class="pre">path/to/file.tex</span>
+<span class="pre">`</span></code></p>
+<p>For more information, run</p>
+<p><code class="docutils literal notranslate"><span class="pre">`bash</span>
+<span class="pre">texact</span> <span class="pre">-h</span>
+<span class="pre">`</span></code></p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="development.html">Development</a></li>
+</ul>
+</div>
+</section>
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading">¶</a></h1>
@@ -240,7 +277,8 @@
 <li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
 <li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
 </ul>
-<img alt="_static/texactlogo_v2.svg" src="_static/texactlogo_v2.svg" />
+<a class="reference internal image-reference" href="_images/texactlogo.svg"><img alt="_images/texactlogo.svg" height="55" src="_images/texactlogo.svg" width="215" />
+</a>
 </section>
 
         </article>
@@ -248,7 +286,15 @@
       <footer>
         
         <div class="related-pages">
-          
+          <a class="next-page" href="development.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Development</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
           
         </div>
         <div class="bottom-of-page">
@@ -268,8 +314,29 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Welcome to TeXact’s documentation!</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#usage">Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
