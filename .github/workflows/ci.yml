@@ -50,5 +50,5 @@ jobs:
       - name: Check texact help
         run: texact -h
 
-      - name: Run texact on each LaTeX, making sure nothing crashes
+      - name: Run texact on each LaTeX file, making sure nothing crashes
         run: python -m pytest -q test/test.py
