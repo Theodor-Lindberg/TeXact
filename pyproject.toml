@@ -29,5 +29,10 @@ py-modules = [
   "texact",
 ]
 
+[project.optional-dependencies]
+docs = [
+    "sphinx>=7",
+]
+
 [tool.setuptools.package-data]
 texact_config = ["chktexrc"]
