@@ -30,13 +30,13 @@ Usage
 
 After installing, run TeXact from the command line:
 
-```bash
+```
 texact -f path/to/file.tex
 ```
 
 For more information, run
 
-```bash
+```
 texact -h
 ```
 
@@ -45,6 +45,7 @@ texact -h
    :maxdepth: 1
    :caption: Contents:
 
+   checklist
    development
 
 
@@ -56,5 +57,10 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
-.. image:: _static/texactlogo.svg
+.. image:: _static/texactlogo-white.svg
+   :class: only-dark
+   :scale: 500%
+
+.. image:: _static/texactlogo-black.svg
+   :class: only-light
    :scale: 500%
