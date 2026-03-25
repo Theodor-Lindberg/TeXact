@@ -53,7 +53,9 @@ class Reviewer_Casing(Reviewer):
         "LNS",
         "MNIST",
     )
-    _PATTERN_LATEX_IGNORED_COMMANDS = re.compile(r"\\(?:cite|ref|label|url)\{[^}]*\}")
+    _PATTERN_LATEX_IGNORED_COMMANDS = re.compile(
+        r"\\(?:cite|ref|label|url|usepackage)\{[^}]*\}"
+    )
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
