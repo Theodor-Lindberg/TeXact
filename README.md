@@ -8,6 +8,10 @@ It is also not intended to replace existing tools, such as
 [lacheck](https://linux.die.net/man/1/lacheck), but rather to
 complement and incorporate them.
 
+## Documentation
+
+[https://theodor-lindberg.github.io/TeXact/](https://theodor-lindberg.github.io/TeXact/)
+
 ## Installation
 
 TeXact can be installed using pip, either directly from git:
