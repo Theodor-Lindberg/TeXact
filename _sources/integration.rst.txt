@@ -19,4 +19,4 @@ Set the name to ``texact:texact`` and let it execute ``texact --no-chktex --html
 If you have chktex installed, you can remove ``--no-chktex``.
 Press OK to save the settings.
 
-Texact can now be invoked on the current file under Tools->User->texact.
+TeXact can now be invoked on the current file under Tools->User->texact.
