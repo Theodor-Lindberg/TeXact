@@ -30,6 +30,11 @@ def set_up_arg_parser() -> argparse.Namespace:
         action=argparse.BooleanOptionalAction,
         help="Run chktex with config/chktexrc",
     )
+    parser.add_argument(
+        "--html-style",
+        action="store_true",
+        help="Output colors using HTML spans instead of ANSI escape codes",
+    )
     return parser.parse_args()
 
 
@@ -57,7 +62,7 @@ def process_file(file_path: Path, reviewers: tuple, printer: Printer) -> int:
 def main():
     args = set_up_arg_parser()
     file_path = Path(args.file)
-    printer = Printer()
+    printer = Printer(html_style=args.html_style)
 
     if not file_path.is_file():
         raise SystemExit(
