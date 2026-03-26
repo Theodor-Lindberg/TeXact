@@ -275,7 +275,7 @@ class Reviewer_Figure(Reviewer):
     def get_summary(self) -> str:
         if self.error_count == 0:
             return ""
-        return f"figure-errors: {self.error_count}"
+        return f"Figure errors: {self.error_count}"
 
     def get_status(self) -> Status:
         return Status.PASSED if self.error_count == 0 else Status.FAILED

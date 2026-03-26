@@ -41,10 +41,10 @@ class Reviewer_RefLabel(Reviewer):
         messages = []
 
         if missing_labels:
-            messages.append(f"missing-labels: {len(missing_labels)}")
+            messages.append(f"Missing labels: {len(missing_labels)}")
 
         if orphaned_labels:
-            messages.append(f"orphaned-labels: {len(orphaned_labels)}")
+            messages.append(f"Orphaned labels: {len(orphaned_labels)}")
 
         return " | ".join(messages) if messages else ""
 

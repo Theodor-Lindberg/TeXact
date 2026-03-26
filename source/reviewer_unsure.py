@@ -29,7 +29,7 @@ class Reviewer_Unsure(Reviewer):
         if not self.match_count:
             return ""
         else:
-            return f"ould-count: {self.match_count}"
+            return f"Count: {self.match_count}"
 
     def get_status(self) -> Status:
         return Status.PASSED if self.match_count == 0 else Status.FAILED
@@ -38,4 +38,4 @@ class Reviewer_Unsure(Reviewer):
         return self._PATTERN.findall(line)
 
     def get_name(self) -> str:
-        return "Ould"
+        return "Modal verbs"
