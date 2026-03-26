@@ -45,6 +45,7 @@ For more information, run
    :maxdepth: 1
    :caption: Contents:
 
+   integration
    checklist
    development
    licenses
