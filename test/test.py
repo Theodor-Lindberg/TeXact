@@ -15,7 +15,7 @@ def test_tex_fixtures_exist() -> None:
 @pytest.mark.parametrize("tex_file", TEX_FILES, ids=lambda tex_file: tex_file.name)
 def test_texact_no_crash_for_tex_file(tex_file: Path) -> None:
     result = subprocess.run(
-        ["texact", "-f", str(tex_file)],
+        ["texact", str(tex_file)],
         capture_output=True,
         text=True,
         check=False,

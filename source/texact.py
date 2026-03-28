@@ -1,7 +1,9 @@
 import argparse
+import sys
 
 from pathlib import Path
 from printer import Printer
+from reviewer import Status
 from reviewer_unsure import Reviewer_Unsure
 from reviewer_inthis import Reviewer_Inthis
 from reviewer_reflabel import Reviewer_RefLabel
@@ -60,6 +62,9 @@ def process_file(file_path: Path, reviewers: tuple, printer: Printer) -> int:
         summary = reviewer.get_summary()
         printer.print(f"Reviewer {name}: {status}. {summary}")
 
+    any_failed = any(reviewer.get_status() == Status.FAILED for reviewer in reviewers)
+    return 1 if any_failed else 0
+
 
 def main():
     args = set_up_arg_parser()
@@ -67,6 +72,8 @@ def main():
 
     if not args.files:
         raise SystemExit("Error: provide at least one LaTeX file.")
+
+    max_ret_code = 0
 
     for file_name in args.files:
         printer.print(f"=== Reviewing {file_name} ===")
@@ -91,7 +98,10 @@ def main():
         if args.chktex:
             reviewers.append(Reviewer_ChkTeX(printer, file_path, template))
 
-        process_file(file_path, tuple(reviewers), printer)
+        ret_code = process_file(file_path, tuple(reviewers), printer)
+        max_ret_code = max(max_ret_code, ret_code)
+
+    sys.exit(max_ret_code)
 
 
 if __name__ == "__main__":
