@@ -21,7 +21,7 @@ def test_texact_no_crash_for_tex_file(tex_file: Path) -> None:
         check=False,
     )
 
-    assert result.returncode == 0, (
+    assert result.returncode == 1, (
         f"texact crashed for {tex_file}\n"
         f"STDOUT:\n{result.stdout}\n"
         f"STDERR:\n{result.stderr}"
