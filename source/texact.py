@@ -16,7 +16,9 @@ def set_up_arg_parser() -> argparse.Namespace:
         description="Automated LaTeX reviewer(s). Can you pass the judgement?"
     )
     parser.add_argument(
-        "-f", "--file", required=True, type=str, help="Path to the LaTeX file"
+        "files",
+        nargs="*",
+        help="Path(s) to LaTeX files",
     )
     parser.add_argument(
         "--unsure",
@@ -61,29 +63,35 @@ def process_file(file_path: Path, reviewers: tuple, printer: Printer) -> int:
 
 def main():
     args = set_up_arg_parser()
-    file_path = Path(args.file)
     printer = Printer(html_style=args.html_style)
 
-    if not file_path.is_file():
-        raise SystemExit(
-            f"Error: '{file_path}' does not exist or is not a regular file."
-        )
+    if not args.files:
+        raise SystemExit("Error: provide at least one LaTeX file.")
 
-    template = get_template(file_path)
+    for file_name in args.files:
+        printer.print(f"=== Reviewing {file_name} ===")
+        file_path = Path(file_name)
 
-    # Add reviewers
-    reviewers = [
-        Reviewer_Inthis(printer),
-        Reviewer_RefLabel(printer),
-        Reviewer_Casing(printer),
-        Reviewer_Figure(printer, file_path),
-    ]
-    if args.unsure:
-        reviewers.append(Reviewer_Unsure(printer))
-    if args.chktex:
-        reviewers.append(Reviewer_ChkTeX(printer, file_path, template))
+        if not file_path.is_file():
+            raise SystemExit(
+                f"Error: '{file_path}' does not exist or is not a regular file."
+            )
 
-    process_file(file_path, tuple(reviewers), printer)
+        template = get_template(file_path)
+
+        # Add reviewers
+        reviewers = [
+            Reviewer_Inthis(printer),
+            Reviewer_RefLabel(printer),
+            Reviewer_Casing(printer),
+            Reviewer_Figure(printer, file_path),
+        ]
+        if args.unsure:
+            reviewers.append(Reviewer_Unsure(printer))
+        if args.chktex:
+            reviewers.append(Reviewer_ChkTeX(printer, file_path, template))
+
+        process_file(file_path, tuple(reviewers), printer)
 
 
 if __name__ == "__main__":
