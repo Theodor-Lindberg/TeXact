@@ -6,6 +6,27 @@ TeXact can be integrated in several different ways in existing workflows.
 Pre-commit hook
 ---------------
 
+Add the following to your ``.pre-commit-config.yaml`` to run TeXact automatically before commits:
+
+.. code-block:: yaml
+
+    repos:
+    - repo: https://github.com/Theodor-Lindberg/TeXact
+        rev: main
+        hooks:
+        - id: texact-check
+
+To avoid running ChkTeX, add the additional flag:
+
+.. code-block:: yaml
+
+    repos:
+    - repo: https://github.com/Theodor-Lindberg/TeXact
+        rev: main
+        hooks:
+        - id: texact-check
+        args: [--no-chktex]
+
 Continuous integration
 ---------------------
 
