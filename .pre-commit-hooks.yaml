@@ -1,6 +1,6 @@
 - id: texact-check
   name: texact check
   description: "Run 'texact' checking LaTeX code"
-  entry: texact -f
+  entry: texact
   language: python
   types: [tex]
