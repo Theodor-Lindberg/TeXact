@@ -32,7 +32,7 @@ After installing, run TeXact from the command line:
 
 .. code-block:: console
 
-   $ texact -f path/to/file.tex
+   $ texact path/to/file.tex
 
 For more information, run
 

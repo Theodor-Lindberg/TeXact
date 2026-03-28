@@ -1,7 +1,7 @@
 Integration
 ===========
 
-TeXact can be integrated in several different ways in existing workflows.
+TeXact can be integrated easily into existing workflows.
 
 Pre-commit hook
 ---------------

@@ -33,7 +33,7 @@ python -m pip install "git+ssh://git@github.com/Theodor-Lindberg/TeXact.git"
 then run as
 
 ```bash
-texact -f path/to/file.tex
+texact path/to/file.tex
 ```
 
 For more information, run

@@ -15,7 +15,7 @@ from template_check import get_template
 
 def set_up_arg_parser() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Automated LaTeX reviewer(s). Can you pass the judgement?"
+        description="Automated LaTeX and article reviewer(s). Can you pass the judgement?"
     )
     parser.add_argument(
         "files",
