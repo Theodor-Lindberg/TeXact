@@ -15,7 +15,7 @@ class Reviewer_Figure(Reviewer):
     _PATTERN_SCALE = re.compile(r"(?:scale|width|height)\s*=", re.IGNORECASE)
     _PATTERN_LABEL = re.compile(r"\\label\{")
     _PATTERN_CAPTION = re.compile(r"\\caption(?:\[[^\]]*\])?\{")
-    _PATTERN_CAPTION_CONTENT = re.compile(r"\\caption(?:\[[^\]]*\])?\{([^}]*)\}")
+    _PATTERN_CAPTION_START = re.compile(r"\\caption(?:\[[^\]]*\])?\{")
     _PATTERN_BEGIN_IEEE_BIOGRAPHY = re.compile(r"\\begin\{IEEEbiography\}")
     _PATTERN_END_IEEE_BIOGRAPHY = re.compile(r"\\end\{IEEE(?:biography|bibliography)\}")
     _PATTERN_INCLUDEGRAPHICS_PATH = re.compile(
@@ -24,6 +24,44 @@ class Reviewer_Figure(Reviewer):
     _ALLOWED_POSITIONS = {"bt", "t", "b", "tb"}
     _IEEE_BIO_REQUIRED_RATIO = 1.25
     _IEEE_BIO_RATIO_TOLERANCE = 0.01
+
+    @staticmethod
+    def _extract_caption_content(line: str) -> str | None:
+        r"""Extract caption content handling nested braces.
+
+        This properly handles captions with nested braces like:
+        \caption{...with $2^{(\cdot)}$ math...}
+
+        Returns the caption text (without the \caption{} wrapper) or None if not found.
+        """
+        match = Reviewer_Figure._PATTERN_CAPTION_START.search(line)
+        if not match:
+            return None
+
+        # Find the start of the caption content (after the opening brace)
+        start_pos = match.end()
+        brace_count = 1
+        pos = start_pos
+
+        # Iterate through the line counting braces to find the matching closing brace
+        while pos < len(line) and brace_count > 0:
+            if line[pos] == "\\" and pos + 1 < len(line):
+                # Skip escaped characters
+                pos += 2
+            elif line[pos] == "{":
+                brace_count += 1
+                pos += 1
+            elif line[pos] == "}":
+                brace_count -= 1
+                if brace_count == 0:
+                    # Found the closing brace
+                    return line[start_pos:pos].strip()
+                pos += 1
+            else:
+                pos += 1
+
+        # If we get here, the closing brace wasn't on this line (shouldn't happen for single-line captions)
+        return None
 
     def __init__(self, printer: Printer, tex_file_path: Path) -> None:
         self.printer = printer
@@ -86,9 +124,8 @@ class Reviewer_Figure(Reviewer):
                 self.has_caption_in_figure = True
                 if self.first_caption_line is None:
                     self.first_caption_line = line_no
-                caption_match = self._PATTERN_CAPTION_CONTENT.search(line)
-                if caption_match:
-                    caption_text = caption_match.group(1).strip()
+                caption_text = self._extract_caption_content(line)
+                if caption_text:
                     caption_has_period = caption_text.endswith(".")
                     if self.caption_period_style is None:
                         self.caption_period_style = caption_has_period
