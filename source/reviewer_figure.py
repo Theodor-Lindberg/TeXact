@@ -79,8 +79,10 @@ class Reviewer_Figure(Reviewer):
         self.first_includegraphics_line: int | None = None
         self.includegraphics_lines: list[int] = []
         self.caption_period_style: bool | None = None
+        self.caption_period_style_line: int | None = None
         self.caption_period_all_same = True
         self.caption_period_issue_line: int | None = None
+        self.caption_period_other_line: int | None = None
         self.caption_period_issue_added = False
 
         # Track IEEEbiography context (can span multiple lines)
@@ -129,10 +131,14 @@ class Reviewer_Figure(Reviewer):
                     caption_has_period = caption_text.endswith(".")
                     if self.caption_period_style is None:
                         self.caption_period_style = caption_has_period
+                        self.caption_period_style_line = line_no
                     elif caption_has_period != self.caption_period_style:
                         self.caption_period_all_same = False
                         if self.caption_period_issue_line is None:
                             self.caption_period_issue_line = line_no
+                            self.caption_period_other_line = (
+                                self.caption_period_style_line
+                            )
 
             # Check for includegraphics
             if self._PATTERN_INCLUDEGRAPHICS.search(line):
@@ -217,7 +223,13 @@ class Reviewer_Figure(Reviewer):
         self.comments.append(
             (
                 issue_line,
-                "Caption period style mismatch: all figure captions should use the same period style.",
+                (
+                    "Caption period style mismatch: "
+                    f"line {issue_line + 1} conflicts with line {self.caption_period_other_line + 1}; "
+                    "all figure captions should use the same period style."
+                    if self.caption_period_other_line is not None
+                    else "Caption period style mismatch: all figure captions should use the same period style."
+                ),
             )
         )
         self.error_count += 1
