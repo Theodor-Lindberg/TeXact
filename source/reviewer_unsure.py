@@ -5,7 +5,7 @@ from printer import Printer
 
 
 class Reviewer_Unsure(Reviewer):
-    _PATTERN = re.compile(r"\b(?:should|would|could|might)\b", re.IGNORECASE)
+    _PATTERN = re.compile(r"\b(?:should|would|could|might|very)\b", re.IGNORECASE)
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
