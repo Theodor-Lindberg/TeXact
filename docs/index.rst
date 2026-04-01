@@ -17,13 +17,24 @@ TeXact can be installed using pip, either directly from git or after cloning the
 
     .. code-block:: console
 
-        $ python -m pip install "git+ssh://git@github.com/Theodor-Lindberg/TeXact.git"
+        $ pip install "git+ssh://git@github.com/Theodor-Lindberg/TeXact.git"
 
 .. admonition:: Install TeXact after cloning
 
     .. code-block:: console
 
-        $ python -m pip install .
+        $ pip install .
+
+If Texact has already been installed, chances are a cached version will be used instead of the latest from Git.
+To be sure the latest is installed, to the following:
+
+.. admonition:: Install TeXact from git, avoiding caches
+
+    .. code-block:: console
+
+         $ pip install --force-reinstall --no-cache-dir "git+ssh://git@github.com/Theodor-Lindberg/TeXact.git"
+
+
 
 Usage
 -----
@@ -40,6 +51,10 @@ For more information, run
 
    $ texact -h
 
+.. seealso::
+
+    :doc:`integration`
+        Information on how to use TeXact in pre-commit, TeXstudio, and more.
 
 .. toctree::
    :maxdepth: 1
