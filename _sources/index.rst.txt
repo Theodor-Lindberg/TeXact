@@ -28,7 +28,7 @@ TeXact can be installed using pip, either directly from git or after cloning the
 If Texact has already been installed, chances are a cached version will be used instead of the latest from Git.
 To be sure the latest is installed, to the following:
 
-.. admonition:: Install TeXact from git
+.. admonition:: Install TeXact from git, avoiding caches
 
     .. code-block:: console
 
