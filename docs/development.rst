@@ -13,13 +13,15 @@ A summary is also outputted at the end.
 As the reviewers are independent of one another, adding new ones
 shouldn't break existing features.
 
-Adding a reviewer
------------------
+Adding features
+---------------
 
 All reviewers inherit from the same base class, *Reviewer*, and
 implements a set of methods: ``process_line``, ``get_comments``,
 ``get_summary``, ``get_status``, and ``get_name``.
-The easiest way to get started is to copy one of the existing classes,
-e.g. ``Reviewer_ould``.
-The main file, ``texact``, must then be updated to include the reviewer.
+Adding a feature involves either modifying an existing reviewer
+or adding a new one.
+The easiest way to get started is by studying one of the existing
+classes, e.g. ``Reviewer_unsure``.
+The main file, ``texact``, must be updated to include any new reviewer.
 Command-line arguments can be added as well, if necessary.
