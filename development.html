@@ -247,14 +247,16 @@ A summary is also outputted at the end.
 As the reviewers are independent of one another, adding new ones
 shouldn’t break existing features.</p>
 </section>
-<section id="adding-a-reviewer">
-<h2>Adding a reviewer<a class="headerlink" href="#adding-a-reviewer" title="Link to this heading">¶</a></h2>
+<section id="adding-features">
+<h2>Adding features<a class="headerlink" href="#adding-features" title="Link to this heading">¶</a></h2>
 <p>All reviewers inherit from the same base class, <em>Reviewer</em>, and
 implements a set of methods: <code class="docutils literal notranslate"><span class="pre">process_line</span></code>, <code class="docutils literal notranslate"><span class="pre">get_comments</span></code>,
 <code class="docutils literal notranslate"><span class="pre">get_summary</span></code>, <code class="docutils literal notranslate"><span class="pre">get_status</span></code>, and <code class="docutils literal notranslate"><span class="pre">get_name</span></code>.
-The easiest way to get started is to copy one of the existing classes,
-e.g. <code class="docutils literal notranslate"><span class="pre">Reviewer_ould</span></code>.
-The main file, <code class="docutils literal notranslate"><span class="pre">texact</span></code>, must then be updated to include the reviewer.
+Adding a feature involves either modifying an existing reviewer
+or adding a new one.
+The easiest way to get started is by studying one of the existing
+classes, e.g. <code class="docutils literal notranslate"><span class="pre">Reviewer_unsure</span></code>.
+The main file, <code class="docutils literal notranslate"><span class="pre">texact</span></code>, must be updated to include any new reviewer.
 Command-line arguments can be added as well, if necessary.</p>
 </section>
 </section>
@@ -316,7 +318,7 @@ Command-line arguments can be added as well, if necessary.</p>
             <ul>
 <li><a class="reference internal" href="#">Development</a><ul>
 <li><a class="reference internal" href="#code-structure">Code structure</a></li>
-<li><a class="reference internal" href="#adding-a-reviewer">Adding a reviewer</a></li>
+<li><a class="reference internal" href="#adding-features">Adding features</a></li>
 </ul>
 </li>
 </ul>
