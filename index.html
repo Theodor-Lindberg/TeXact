@@ -244,13 +244,21 @@ report any issues or suggestions there. Contributions are also welcome.</p>
 <p>TeXact can be installed using pip, either directly from git or after cloning the repository.</p>
 <div class="admonition-install-texact-from-git admonition">
 <p class="admonition-title">Install TeXact from git</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;git+ssh://git@github.com/Theodor-Lindberg/TeXact.git&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;git+ssh://git@github.com/Theodor-Lindberg/TeXact.git&quot;</span>
 </pre></div>
 </div>
 </div>
 <div class="admonition-install-texact-after-cloning admonition">
 <p class="admonition-title">Install TeXact after cloning</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>.
+</pre></div>
+</div>
+</div>
+<p>If Texact has already been installed, chances are a cached version will be used instead of the latest from Git.
+To be sure the latest is installed, to the following:</p>
+<div class="admonition-install-texact-from-git admonition">
+<p class="admonition-title">Install TeXact from git</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip<span class="w"> </span>install<span class="w"> </span>--force-reinstall<span class="w"> </span>--no-cache-dir<span class="w"> </span><span class="s2">&quot;git+ssh://git@github.com/Theodor-Lindberg/TeXact.git&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -264,6 +272,13 @@ report any issues or suggestions there. Contributions are also welcome.</p>
 <p>For more information, run</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>texact<span class="w"> </span>-h
 </pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="integration.html"><span class="doc">Integration</span></a></dt><dd><p>Information on how to use TeXact in pre-commit, TeXstudio, and more.</p>
+</dd>
+</dl>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
