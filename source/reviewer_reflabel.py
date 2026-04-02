@@ -14,6 +14,7 @@ class Reviewer_RefLabel(Reviewer):
         self.referenced_labels = set()
         self.label_line_map = {}  # Maps label name to first line number it was defined
         self.ref_line_map = {}  # Maps reference name to first line number it was referenced
+        self.underscore_comments = []
 
     def process_line(self, line_no: int, line: str) -> None:
         # Remove comments (everything after %)
@@ -23,6 +24,13 @@ class Reviewer_RefLabel(Reviewer):
         # Extract all \label{...} patterns
         label_matches = self._PATTERN_LABEL.findall(line)
         for label_name in label_matches:
+            if "_" in label_name:
+                self.underscore_comments.append(
+                    (
+                        line_no,
+                        f"Label '{self.printer.dark_red(label_name)}' should use hyphens (-) instead of underscores (_).",
+                    )
+                )
             if label_name not in self.defined_labels:
                 self.defined_labels.add(label_name)
                 self.label_line_map[label_name] = line_no
@@ -46,6 +54,9 @@ class Reviewer_RefLabel(Reviewer):
         if orphaned_labels:
             messages.append(f"Orphaned labels: {len(orphaned_labels)}")
 
+        if self.underscore_comments:
+            messages.append(f"Labels with underscores: {len(self.underscore_comments)}")
+
         return " | ".join(messages) if messages else ""
 
     def get_comments(self) -> list[tuple[int, str]]:
@@ -53,6 +64,7 @@ class Reviewer_RefLabel(Reviewer):
         orphaned_labels = self.defined_labels - self.referenced_labels
 
         comments: list[tuple[int, str]] = []
+        comments.extend(self.underscore_comments)
 
         for label in missing_labels:
             line_no = self.ref_line_map[label]
@@ -75,7 +87,7 @@ class Reviewer_RefLabel(Reviewer):
         missing_labels = self.referenced_labels - self.defined_labels
         orphaned_labels = self.defined_labels - self.referenced_labels
 
-        if missing_labels or orphaned_labels:
+        if missing_labels or orphaned_labels or self.underscore_comments:
             return Status.FAILED
         return Status.PASSED
 
