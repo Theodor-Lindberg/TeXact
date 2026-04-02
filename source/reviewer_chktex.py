@@ -33,6 +33,29 @@ class Reviewer_ChkTeX(Reviewer):
     def process_line(self, line_no: int, line: str) -> None:
         return
 
+    # def suppress_comments(
+    #     self, comments: list[tuple[int, str]]
+    # ) -> list[tuple[int, str]]:
+    #     filtered_comments = []
+    #     suppressed_count = 0
+
+    #     for line_no, message in comments:
+    #         # The message includes the warning text and source context separated by newlines.
+    #         # Because 'Warning' is colorized, we check for '25.' or '8.' in the first line.
+    #         first_line = message.split("\n")[0]
+    #         if (
+    #             "Warning" in first_line
+    #             and "25." in first_line
+    #             and "\\includegraphics" in message
+    #         ):
+    #             suppressed_count += 1
+    #             continue
+
+    #         filtered_comments.append((line_no, message))
+
+    #     self.warning_count -= suppressed_count
+    #     return filtered_comments
+
     def get_comments(self) -> list[tuple[int, str]]:
         if self._has_run:
             return self.comments
