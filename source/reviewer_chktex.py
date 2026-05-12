@@ -1,5 +1,6 @@
 import os
 import re
+import shutil
 import subprocess
 from importlib import resources
 from pathlib import Path
@@ -28,6 +29,7 @@ class Reviewer_ChkTeX(Reviewer):
         self.warning_count = 0
         self.error_count = 0
         self.execution_failed = False
+        self.chktex_not_installed = False
         self._has_run = False
 
     def process_line(self, line_no: int, line: str) -> None:
@@ -61,6 +63,19 @@ class Reviewer_ChkTeX(Reviewer):
             return self.comments
 
         self._has_run = True
+
+        # Check if chktex is installed
+        if shutil.which("chktex") is None:
+            self.execution_failed = True
+            self.chktex_not_installed = True
+            self.comments.append(
+                (
+                    0,
+                    "ChkTeX is not installed. Please install it to run this check.",
+                )
+            )
+            return self.comments
+
         chktexrc_path = self._resolve_chktexrc_path()
         if chktexrc_path is None:
             self.execution_failed = True
@@ -217,6 +232,9 @@ class Reviewer_ChkTeX(Reviewer):
     def get_status(self) -> Status:
         if not self._has_run:
             self.get_comments()
+
+        if self.chktex_not_installed:
+            return Status.WARNING
 
         if self.execution_failed:
             return Status.FAILED

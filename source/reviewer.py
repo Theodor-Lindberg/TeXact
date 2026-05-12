@@ -7,6 +7,7 @@ from printer import Printer
 class Status(Enum):
     PASSED = auto()
     FAILED = auto()
+    WARNING = auto()
     UNCHECKED = auto()
 
 
