@@ -7,12 +7,14 @@ from printer import Printer
 class Reviewer_Unsure(Reviewer):
     _PATTERN = re.compile(r"\b(?:should|would|could|might|very)\b", re.IGNORECASE)
     _PATTERN_WE = re.compile(r"\bwe\b", re.IGNORECASE)
+    _PATTERN_SPACE_BEFORE_PERIOD = re.compile(r"(?<!\\)\s+\.")
     _MAX_WE_OCCURRENCES = 5
 
     def __init__(self, printer: Printer) -> None:
         self.printer = printer
         self.match_count = 0
         self.we_count = 0
+        self.space_before_period_count = 0
         self.we_limit_comment_added = False
         self.we_last_line: int | None = None
         self.comments: list[tuple[int, str]] = []
@@ -31,6 +33,16 @@ class Reviewer_Unsure(Reviewer):
             )
             self.comments.append((line_no, message))
             self.match_count += len(matches)
+
+        period_spacing_matches = self.find_space_before_period(line)
+        if period_spacing_matches:
+            self.comments.append(
+                (
+                    line_no,
+                    "Avoid whitespace before '.'.",
+                )
+            )
+            self.space_before_period_count += len(period_spacing_matches)
 
     def get_comments(self) -> list[tuple[int, str]]:
         if (
@@ -59,6 +71,8 @@ class Reviewer_Unsure(Reviewer):
             issues.append(
                 f"Exceeded 'we' count: {self.we_count}/{self._MAX_WE_OCCURRENCES}"
             )
+        if self.space_before_period_count:
+            issues.append(f"Spaces before period: {self.space_before_period_count}")
 
         if not issues:
             return ""
@@ -67,7 +81,9 @@ class Reviewer_Unsure(Reviewer):
     def get_status(self) -> Status:
         return (
             Status.PASSED
-            if self.match_count == 0 and self.we_count <= self._MAX_WE_OCCURRENCES
+            if self.match_count == 0
+            and self.we_count <= self._MAX_WE_OCCURRENCES
+            and self.space_before_period_count == 0
             else Status.FAILED
         )
 
@@ -77,5 +93,8 @@ class Reviewer_Unsure(Reviewer):
     def find_we(self, line: str) -> list[str]:
         return self._PATTERN_WE.findall(line)
 
+    def find_space_before_period(self, line: str) -> list[str]:
+        return self._PATTERN_SPACE_BEFORE_PERIOD.findall(line)
+
     def get_name(self) -> str:
-        return "Modal verbs"
+        return "Writing style"
