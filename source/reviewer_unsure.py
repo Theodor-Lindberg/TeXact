@@ -7,7 +7,7 @@ from printer import Printer
 class Reviewer_Unsure(Reviewer):
     _PATTERN = re.compile(r"\b(?:should|would|could|might|very)\b", re.IGNORECASE)
     _PATTERN_WE = re.compile(r"\bwe\b", re.IGNORECASE)
-    _PATTERN_SPACE_BEFORE_PERIOD = re.compile(r"[ \t]+\.")
+    _PATTERN_SPACE_BEFORE_PERIOD = re.compile(r"\s+\.")
     _MAX_WE_OCCURRENCES = 5
 
     def __init__(self, printer: Printer) -> None:

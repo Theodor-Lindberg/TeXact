@@ -41,7 +41,7 @@ def test_reviewer_unsure_fails_on_space_before_period() -> None:
 
 def test_reviewer_unsure_passes_without_space_before_period() -> None:
     reviewer = Reviewer_Unsure(Printer())
-    reviewer.process_line(0, "The frequency. is measured.")
+    reviewer.process_line(0, "The frequency is measured.")
 
     assert reviewer.get_status() == Status.PASSED
     assert reviewer.get_summary() == ""
